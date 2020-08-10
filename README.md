@@ -41,9 +41,13 @@ Here are the main classes of our Library Management System:
 ### PakingLot Design
 
 ### Use Cases
-1. The parking lot has multiple levels and each level should have multiple rows of spots. 
+1. The parking lot has multiple Parking Spots
 2. The Parking lot can park motorcycles, cars and buses. 
-3. The Parking lot has the motorcycle SPot, Compact Spots and large Spots
+3. The Parking lot has the motorcycle Spots, Compact Spots and large Spots
+4. Each ParkingSpot is contain with number and Type. Type is either SMALL or Regular
+5. To park a motorCycle we need any free spot.
+6. To park a car we need any free Regular Spot. 
+7. To park a bus we need consecutive 5 regular Spot
 
 
 ```cpp
@@ -110,7 +114,7 @@ class Vehicle {
             parkingSpots.clear();
         }
 
-        virtual bool CanVehicleFitIntoSpot( ParkingSpot s ) = 0;
+        virtual bool canVehicleFitIntoSpot( ParkingSpot s ) = 0;
 
 };
 
@@ -122,7 +126,7 @@ class Car: public Vehicle {
         spotNeeded = 1;
     }
 
-    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
+    bool canVehicleFitIntoSpot(  ParkingSpot s ) {
         if(  s.isParkingSportFree() && s.getType() == REGULAR ) {
             return true;
         } else return false;
@@ -137,7 +141,7 @@ class MotorCycle: public Vehicle {
         spotNeeded = 1;
     }
 
-    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
+    bool canVehicleFitIntoSpot(  ParkingSpot s ) {
         if( s.isParkingSportFree()  ) {
             return true;
         } else return false;
@@ -152,13 +156,14 @@ class Bus: public Vehicle {
         spotNeeded = 5;
     }
 
-    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
-        if( s.isParkingSportFree()  ) {
+    bool canVehicleFitIntoSpot(  ParkingSpot s ) {
+        if( s.isParkingSportFree() && s.getType() == REGULAR  ) {
             return true;
         } else return false;
     }
 
-    bool canBusFitIntoSpot( vector < ParkingSpot > s ) {
+    // Assuming that 5 consecutive Spots are given
+    bool canBusFitIntoSpot( vector < ParkingSpot > s ) { 
         for( int i = 0 ; i < s.size() ; i++ ) {
             if( !CanVehicleFitIntoSpot(s[i])) {
                 return false;
@@ -180,6 +185,11 @@ class ParkingLot {
         vector < ParkingSpot > parkingspots;
 
     public:
+
+        ParkingLot(vector < ParkingSpot > p) { 
+            parkingspots = p;
+
+        }
 
 
 };
