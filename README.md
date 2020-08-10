@@ -114,6 +114,10 @@ class Vehicle {
             parkingSpots.clear();
         }
 
+        void addParkingSport(ParkingSpot p) {
+            parkingSpots.push_back(p);
+        }
+
         virtual bool canVehicleFitIntoSpot( ParkingSpot s ) = 0;
 
 };
@@ -163,9 +167,9 @@ class Bus: public Vehicle {
     }
 
     // Assuming that 5 consecutive Spots are given
-    bool canBusFitIntoSpot( vector < ParkingSpot > s ) { 
+    bool canBusFitIntoSpot( vector < ParkingSpot > s ) {
         for( int i = 0 ; i < s.size() ; i++ ) {
-            if( !CanVehicleFitIntoSpot(s[i])) {
+            if( !canVehicleFitIntoSpot(s[i])) {
                 return false;
             }
 
@@ -186,12 +190,185 @@ class ParkingLot {
 
     public:
 
-        ParkingLot(vector < ParkingSpot > p) { 
+        ParkingLot(vector < ParkingSpot > p) {
             parkingspots = p;
+
+        }
+
+        vector <ParkingSpot> getFreeParkingSpots() {
+            vector < ParkingSpot > results;
+            for( int i = 0 ; i < parkingspots.size() ; i++ ) {
+                if( parkingspots[i].isParkingSportFree()) {
+                    results.push_back(parkingspots[i]);
+                }
+            }
+
+            return results;
 
         }
 
 
 };
+
+```
+
+
+### Online Shopping System ( Amazon, Flipcart ) 
+
+Major Entities
+
+1. Customer 
+2. Cart ( One Cart of each Customer )
+3. Product
+4. Item ( Product, Quantity ) 
+5. Order 
+6. Shipping
+7. Notification
+
+```
+enum AccountStatus { ACTIVE, INACTIVE };
+enum OrderStatus { UNSHIPED, PENDING, SHIPPED, COMPLETED, CANCELED };
+
+class ProductCategory {
+private:
+    string name, description;
+
+};
+
+
+class Account {
+    private:
+        string username, password, name, email, phone;
+        AccountStatus status;
+    public:
+
+};
+
+class Item {
+
+    private:
+        string productId;
+        double price;
+        int quantity;
+    public:
+        Item(string productId, double price, int quantity) {
+            this->productId = productId;
+            this->price = price;
+            this->quantity = quantity;
+        }
+
+        string getProductId() {
+            return productId;
+        }
+
+        double getPrice() {
+            return price;
+        }
+
+        int getQuantity() {
+            return quantity;
+        }
+
+        void setQuantity(int quantity) {
+            quantity = quantity;
+        }
+
+};
+
+
+class ShopingCart{
+    private:
+        vector < Item > items;
+    public:
+        ShopingCart() {
+        }
+
+        void addItem(Item a) {
+            items.push_back(a);
+        }
+
+        void removeItem( Item a ) {
+
+           // items.erase(a);
+        }
+
+        vector<Item> getItems() {
+            return items;
+        }
+
+
+};
+
+class Shipment{ 
+    string shipmentNumber;
+    
+}
+
+class Order{
+private:
+    string OrderNumber;
+    OrderNumber status;
+};
+
+
+
+class Customer {
+
+    Account account;
+    ShopingCart cart;
+    Order order;
+
+public:
+    void addItemToCart(Item a) { }
+    void removeItemFromCart( Item a ) { }
+    void placedOrder(Order ord) {}
+
+
+
+};
+
+
+class Product {
+
+    private:
+        string productId, name, description;
+        double price;
+        ProductCategory category;
+        int avaiableItemCount;
+        Account seller;
+    public:
+        Product(string productId, string name, string description, double price, int avaiableItemCount, ProductCategory ctg, Account seller) {
+            productId = productId;
+            name = name;
+            description = description;
+            price = price;
+            category = ctg;
+            seller = seller;
+
+
+        }
+
+        string getProductId() {
+            return productId;
+        }
+
+        double getPrice() {
+            return price;
+        }
+
+        void setPrice(double price) {
+            price = price;
+        }
+
+        int getAvailableItemCount() {
+            return avaiableItemCount;
+        }
+
+        void setAvailableItemCount( int avaiableItemCount) {
+            avaiableItemCount = avaiableItemCount;
+        }
+
+};
+
 
 ```
