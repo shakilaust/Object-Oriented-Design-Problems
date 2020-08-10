@@ -36,3 +36,152 @@ We have three main actors in our system:
 Here are the main classes of our Library Management System:
 
 
+
+
+### PakingLot Design
+
+### Use Cases
+1. The parking lot has multiple levels and each level should have multiple rows of spots. 
+2. The Parking lot can park motorcycles, cars and buses. 
+3. The Parking lot has the motorcycle SPot, Compact Spots and large Spots
+
+
+```cpp
+
+enum VehicleSize {  MOTORCYCLE, COMPACT, LARGE };
+enum ParkingSpotType { SMALL, REGULAR };
+
+class ParkingSpot {
+
+    private:
+        int number;
+        bool isFree;
+        ParkingSpotType type;
+
+    public:
+        ParkingSpot( int number, ParkingSpotType type){
+            isFree = true;
+            number = number;
+            type = type;
+        }
+
+        bool isParkingSportFree() {
+            return isFree;
+        }
+
+        int getNumber() {
+            return number;
+        }
+
+        int getType() {
+            return type;
+        }
+
+        void makeParkingSpotBooked() {
+            isFree = false;
+        }
+
+};
+
+
+class Vehicle {
+
+    private:
+        vector < ParkingSpot > parkingSpots;   // FOr bus we need 5 consecutive spot
+        string licensePlate;
+
+    protected:
+        VehicleSize size;
+        int spotNeeded;
+
+    public:
+        Vehicle( string licenceNumber) {
+            licensePlate = licenceNumber;
+        }
+        int getSpotNeeded() {
+            return spotNeeded;
+        }
+
+        int getVehicleSize() {
+            return size;
+        }
+
+        void clearSpot() {
+            parkingSpots.clear();
+        }
+
+        virtual bool CanVehicleFitIntoSpot( ParkingSpot s ) = 0;
+
+};
+
+class Car: public Vehicle {
+
+
+    Car(string licensePlate): Vehicle(licensePlate) {
+        size = COMPACT;
+        spotNeeded = 1;
+    }
+
+    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
+        if(  s.isParkingSportFree() && s.getType() == REGULAR ) {
+            return true;
+        } else return false;
+    }
+};
+
+class MotorCycle: public Vehicle {
+
+
+    MotorCycle(string licensePlate): Vehicle(licensePlate) {
+        size = COMPACT;
+        spotNeeded = 1;
+    }
+
+    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
+        if( s.isParkingSportFree()  ) {
+            return true;
+        } else return false;
+    }
+};
+
+
+class Bus: public Vehicle {
+
+     Bus(string licensePlate): Vehicle(licensePlate) {
+        size = COMPACT;
+        spotNeeded = 5;
+    }
+
+    bool CanVehicleFitIntoSpot(  ParkingSpot s ) {
+        if( s.isParkingSportFree()  ) {
+            return true;
+        } else return false;
+    }
+
+    bool canBusFitIntoSpot( vector < ParkingSpot > s ) {
+        for( int i = 0 ; i < s.size() ; i++ ) {
+            if( !CanVehicleFitIntoSpot(s[i])) {
+                return false;
+            }
+
+        }
+        return true;
+
+    }
+
+
+};
+
+
+
+class ParkingLot {
+
+    private:
+        vector < ParkingSpot > parkingspots;
+
+    public:
+
+
+};
+
+```
